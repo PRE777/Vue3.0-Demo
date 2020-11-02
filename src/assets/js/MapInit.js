@@ -39,6 +39,7 @@ export function defaultInitCesium(id, mapType, isImage, sceneModeType = '3D', op
         fullscreenButton: false, // 是否显示全屏按钮
         geocoder: false, // 是否显示geocoder小器件，右上角查询按钮
         homeButton: false,
+        skyAtmosphere: false, // 大气层
         infoBox: false, // 是否显示信息框
         navigationHelpButton: false, // 是否显示右上角的帮助按钮
         sceneModePicker: false, // 是否显示3D/2D选择器

@@ -1,6 +1,5 @@
 <template>
   <div class="home-container">
-    <!-- <img src="/images/timg.png" alt="图片" /> -->
     <div class="mapview-container">
       <div id="cesium-mapViewer"></div>
       <target-for-location-component
@@ -34,7 +33,10 @@ export default {
       true,
       "3D"
     );
+    this.mapViewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
+    this.mapViewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
+    // 开启地图高程
     var terrainProvider = Cesium.createWorldTerrain({
       requestVertexNormals: true,
       requestWaterMask: false,
@@ -50,6 +52,7 @@ export default {
       height: 5000000.0,
     });
     this.targetLocationShow = true;
+    // this.mapViewer.scene.morphTo3D(0); // 2D 3D 切换
   },
   methods: {},
 };
