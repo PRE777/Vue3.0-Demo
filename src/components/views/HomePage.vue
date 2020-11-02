@@ -35,12 +35,12 @@ export default {
       "3D"
     );
 
-    // var terrainProvider = Cesium.createWorldTerrain({
-    //   requestVertexNormals: true,
-    //   requestWaterMask: false,
-    // });
-    // this.mapViewer.terrainProvider = terrainProvider;
-    // this.mapViewer.scene.globe.depthTestAgainstTerrain = true; // true有高程遮挡
+    var terrainProvider = Cesium.createWorldTerrain({
+      requestVertexNormals: true,
+      requestWaterMask: false,
+    });
+    this.mapViewer.terrainProvider = terrainProvider;
+    this.mapViewer.scene.globe.depthTestAgainstTerrain = true; // true有高程遮挡
 
     // 显示刷新率和帧率
     this.mapViewer.scene.debugShowFramesPerSecond = true;

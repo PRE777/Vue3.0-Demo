@@ -16,6 +16,8 @@ module.exports = {
         port: 8088,
         https: false,
         disableHostCheck: true, // 处理host不识别问题
+        open: true, //自动打开浏览器
+
     },
     configureWebpack: {
         output: {

@@ -1,5 +1,5 @@
 var Cesium = require('cesium/Cesium');
-// import { BaiduImageryProvider } from './BaiduImageryProvider'
+import { BaiduImageryProvider } from './BaiduImageryProvider'
 // import { wmsUrl } from '../../request/env.js'
 
 /**
@@ -113,7 +113,8 @@ function getTianDiTuImageProvider() {
         style: "default",
         format: "image/jpeg",
         tileMatrixSetID: "GoogleMapsCompatible",
-        show: false
+        show: false,
+        // tilingScheme: new Cesium.GeographicTilingScheme(), // 墨卡托
     })
 }
 
@@ -124,7 +125,7 @@ function getTianDiTuStreetProvider() {
         layer: 'tdtVecBasicLayer',
         style: 'default',
         format: 'image/jpeg',
-        tileMatrixSetID: 'GoogleMapsCompatible'
+        tileMatrixSetID: 'GoogleMapsCompatible',
     })
 }
 
@@ -132,11 +133,6 @@ function getTianDiTuStreetProvider() {
 function getAmapImageProvider() {
     return new Cesium.UrlTemplateImageryProvider({
         url: 'http://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
-        layer: "tdtVecBasicLayer",
-        style: "default",
-        format: "image/png",
-        tileMatrixSetID: "GoogleMapsCompatible",
-        show: true
     })
 }
 
@@ -154,17 +150,18 @@ function getBaiDuProvider() {
     })
 }
 
-// 谷歌影像
+// 谷歌影像 m-地图，s-影像，h-注记，t-地形，y-混合影像与注记
 function getGoogleImageProvider() {
     return new Cesium.UrlTemplateImageryProvider({
-        url: 'http://mt2.google.cn/vt/lyrs=y&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=G'
+        // url: 'http://mt2.google.cn/vt/lyrs=y&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=G'
+        url: "http://mt1.google.cn/vt/lyrs=y&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
     })
 }
 
 // 谷歌街道
 function getGoogleStreetProvider() {
     return new Cesium.UrlTemplateImageryProvider({
-        url: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i345013117!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0'
+        url: "http://mt2.google.cn/vt/lyrs=m&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=G"
     })
 }
 
