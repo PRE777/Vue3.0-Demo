@@ -3,7 +3,6 @@
     <!-- <img src="/images/timg.png" alt="图片" /> -->
     <div class="mapview-container">
       <div id="cesium-mapViewer"></div>
-      <img :src="imgURL" alt="图片" v-drag />
       <target-for-location-component
         :mapViewer="mapViewer"
         v-if="targetLocationShow"
@@ -63,14 +62,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: transparent;
-}
-img {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 100px;
-  height: 100px;
-  z-index: 9999;
 }
 .mapview-container {
   display: block;

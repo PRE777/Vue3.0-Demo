@@ -13,6 +13,7 @@ export default {
       lng: "",
       lat: "",
       cameraHeight: "",
+      level: "",
     };
   },
   mounted() {
@@ -34,6 +35,7 @@ export default {
         let height = Math.ceil(
           that.mapViewer.camera.positionCartographic.height
         );
+        // let level =
         // let altitude = that.mapViewer.scene.globe.getHeight(cartographic); // 获取海拔高度，只有开启地形高程才精确
         that.cameraHeight =
           height > 1000
@@ -41,6 +43,7 @@ export default {
             : height.toFixed(2) + "米";
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+    
     //设置鼠标滚动事件的处理函数，这里负责监听高度值变化
     handler.setInputAction(function (wheelment) {
       let height = Math.ceil(that.mapViewer.camera.positionCartographic.height);
@@ -49,6 +52,15 @@ export default {
           ? (height / 1000).toFixed(3) + "千米"
           : height.toFixed(2) + "米";
     }, Cesium.ScreenSpaceEventType.WHEEL);
+
+    // 监听地图移动结束
+    this.mapViewer.scene.camera.moveEnd.addEventListener(() => {
+      let height = Math.ceil(that.mapViewer.camera.positionCartographic.height);
+      that.cameraHeight =
+        height > 1000
+          ? (height / 1000).toFixed(3) + "千米"
+          : height.toFixed(2) + "米";
+    });
   },
   methods: {},
 };
