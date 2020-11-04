@@ -14,6 +14,7 @@ import { defaultInitCesium } from "../../assets/js/MapInit";
 import CesiumNavigation from "cesium-navigation-es6";
 import { mapControl } from "../../assets/js/tool/MapControl";
 import targetForLocationComponent from "../targets/TargetLocation.vue";
+import { createHeatMap } from "../../assets/js/AddHeatMap";
 var Cesium = require("cesium/Cesium");
 export default {
   data() {
@@ -53,6 +54,15 @@ export default {
     });
     this.targetLocationShow = true;
     // this.mapViewer.scene.morphTo3D(0); // 2D 3D 切换
+
+    // 创建热力图
+    var bounds = {
+      west: -109.0,
+      south: 30.0,
+      east: -80.0,
+      north: 50.0,
+    };
+    // createHeatMap(this.mapViewer, bounds);
   },
   methods: {},
 };
