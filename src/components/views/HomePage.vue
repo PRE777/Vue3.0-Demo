@@ -10,6 +10,14 @@
         :mapViewer="mapViewer"
         v-if="screenMode"
       ></scene-mode-component>
+      <!-- vue2.0 图片为放在static文件下，vue3.0 图片未放在public下（未放在静态文件夹下），用以下方式加载图片（必须用require） -->
+      <div
+        id="test"
+        :style="{
+          backgroundImage: 'url(' + require('@/assets/img/tianxia1.png') + ')',
+        }"
+        style="display: none"
+      ></div>
     </div>
   </div>
 </template>
@@ -54,6 +62,8 @@ export default {
       north: 50.0,
     };
     // createHeatMap(this.mapViewer, bounds);
+    // document.querySelector("#test").style.backgroundImage =
+    //   "url('tianxia.png')";
   },
   methods: {
     initCesium() {
@@ -85,6 +95,14 @@ export default {
 
 <style scoped>
 @import url(../../assets/css/cesiumNavgation.css);
+#test {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background-color: red;
+}
 
 .home-container {
   width: 100%;

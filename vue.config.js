@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     // publicPath: process.env.NODE_ENV === 'production' ? './' : './',
-    publicPath: '/',
+    publicPath: './',
     assetsDir: 'static',
     outputDir: process.env.outputDir,
     // 避免Eslint报错

@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <img id="image" :src="imgURL" alt="mode" @click="changedMode()" />
+    <img id="image" src="" alt="mode" @click="changedMode()" />
   </div>
 </template>
 
@@ -10,34 +10,61 @@ var Cesium = require("cesium/Cesium");
 export default {
   props: ["mapViewer"],
   data() {
-    return {
-      imgURL: "",
-    };
+    return {};
   },
 
   mounted() {
     this.$nextTick(() => {
+      //   this.changedMode();
       this.changedMode();
     });
   },
   methods: {
     changedMode() {
+      let imageURL = "";
+      let image = "";
       // morphTo3D morphTo2D 方法并不会保留当前地图所处位置，而是重新加载（括号里的参数时用来控制经过多久开始变化的！）
       if (this.mapViewer.scene.mode == Cesium.SceneMode.SCENE2D) {
         // this.mapViewer.scene.morphTo3D(1); // 2D 3D 切换
         this.mapViewer.scene.mode = Cesium.SceneMode.SCENE3D;
-        this.imgURL = require("@/assets/img/map3D.png");
+        imageURL = require("@/assets/img/map3D.png");
       } else if (this.mapViewer.scene.mode == Cesium.SceneMode.SCENE3D) {
         // this.mapViewer.scene.morphTo2D(1); // 2D 3D 切换
         this.mapViewer.scene.mode = Cesium.SceneMode.SCENE2D;
-        this.imgURL = require("@/assets/img/map2D.png");
+        imageURL = require("@/assets/img/map2D.png");
       }
-    //   $("#image").animate({ opacity: "toggle" }, "slow", null, function () {
-    //     $("#image").attr("src", this.imgURL);
-    //     $("#image").animate({ opacity: "toggle" }, "slow");
-    //   });
-      //   $("#image").animate({ opacity: "toggle" }, "slow");
-      //   document.querySelector("img").animate({ opacity: "toggle" }, "slow");
+
+      /**
+       * 效果一
+        //   (“slow”,“normal”, or “fast”) 或 毫秒数
+        //   show，hide，toggle切换
+        $("#image").animate({ opacity: "toggle" }, 400, null, function () {
+          $(this).attr("src", imageURL);
+          $(this).animate({ opacity: "toggle" }, 400);
+        });
+        // 与下相同
+       */
+
+      $("#image").fadeToggle(400, null, function () {
+        $(this).attr("src", imageURL);
+        $(this).fadeToggle(400);
+      });
+      /**
+       * 效果二
+        $("#image").slideUp(400, null, function () {
+          $(this).attr("src", imageURL);
+          $(this).slideDown(400);
+        });
+     */
+
+      //   document.querySelector(
+      //     ".main-container"
+      //   ).style.backgroundImage = `url('${imageURL}')`;
+
+      //   $(".main-container").css(
+      //     "background-image",
+      //     `url('${imageURL}')`
+      //   );
     },
   },
 };
@@ -47,15 +74,12 @@ export default {
   display: block;
   width: 40px;
   height: 40px;
-  /* background: red; */
-  /* background-image: url("../../assets/img/map2D.png");
-  transition: background-image 1s; */
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: background-image 0.8s; /* background-image 切换时0.8s 动画，此处未使用*/
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
-}
-#image {
-  transition: src 1s;
 }
 </style>
