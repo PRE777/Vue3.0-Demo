@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <img id="image" src="" alt="mode" @click="changedMode()" />
+    <img id="image" :src="imageURL" alt="mode" @click="changedMode()" />
   </div>
 </template>
 
@@ -10,13 +10,20 @@ var Cesium = require("cesium/Cesium");
 export default {
   props: ["mapViewer"],
   data() {
-    return {};
+    return {
+      imageURL:""
+    };
   },
 
   mounted() {
     this.$nextTick(() => {
       //   this.changedMode();
-      this.changedMode();
+      // this.changedMode();
+       if (this.mapViewer.scene.mode == Cesium.SceneMode.SCENE2D) {
+        this.imageURL = require("@/assets/img/map2D.png");
+      } else if (this.mapViewer.scene.mode == Cesium.SceneMode.SCENE3D) {
+        this.imageURL = require("@/assets/img/map3D.png");
+      }
     });
   },
   methods: {
