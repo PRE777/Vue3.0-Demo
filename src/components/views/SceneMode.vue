@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <img id="image" :src="imageURL" alt="mode" @click="changedMode()" />
+    <img id="image" src="" alt="mode" @click="changedMode()" />
   </div>
 </template>
 
@@ -10,19 +10,17 @@ var Cesium = require("cesium/Cesium");
 export default {
   props: ["mapViewer"],
   data() {
-    return {
-      imageURL:""
-    };
+    return {};
   },
 
   mounted() {
     this.$nextTick(() => {
       //   this.changedMode();
       // this.changedMode();
-       if (this.mapViewer.scene.mode == Cesium.SceneMode.SCENE2D) {
-        this.imageURL = require("@/assets/img/map2D.png");
+      if (this.mapViewer.scene.mode == Cesium.SceneMode.SCENE2D) {
+        $("#image").attr("src", require("@/assets/img/map2D.png"));
       } else if (this.mapViewer.scene.mode == Cesium.SceneMode.SCENE3D) {
-        this.imageURL = require("@/assets/img/map3D.png");
+        $("#image").attr("src", require("@/assets/img/map3D.png"));
       }
     });
   },
@@ -52,9 +50,9 @@ export default {
         // 与下相同
        */
 
-      $("#image").fadeToggle(400, null, function () {
+      $("#image").fadeToggle(350, null, function () {
         $(this).attr("src", imageURL);
-        $(this).fadeToggle(400);
+        $(this).fadeToggle(350);
       });
       /**
        * 效果二
