@@ -1,5 +1,5 @@
 var Cesium = require('cesium/Cesium');
-import { BaiduImageryProvider } from './BaiduImageryProvider'
+// import { BaiduImageryProvider } from './BaiduImageryProvider'
 // import { wmsUrl } from '../../request/env.js'
 
 /**
@@ -22,7 +22,7 @@ export function defaultInitCesium(id, mapType, isImage, sceneModeType = '3D', op
     } else if (mapType == 'Amap') {
         imageryProvider = isImage ? getAmapImageProvider() : getAmapStreetProvider();
     } else if (mapType == 'baidu') {
-        imageryProvider = getBaiDuProvider();
+        // imageryProvider = getBaiDuProvider();
     } else if (mapType == 'google') {
         imageryProvider = isImage ? getGoogleImageProvider() : getGoogleStreetProvider();
     } else if (mapType == 'wms') {
