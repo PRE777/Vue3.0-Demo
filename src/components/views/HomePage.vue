@@ -6,6 +6,18 @@
         :mapViewer="mapViewer"
         v-if="targetLocationShow"
       ></target-for-location-component>
+      <scene-mode-component
+        :mapViewer="mapViewer"
+        v-if="screenMode"
+      ></scene-mode-component>
+      <!-- vue2.0 图片为放在static文件下，vue3.0 图片未放在public下（未放在静态文件夹下），用以下方式加载图片（必须用require） -->
+      <div
+        id="test"
+        :style="{
+          backgroundImage: 'url(' + require('@/assets/img/tianxia1.png') + ')',
+        }"
+        style="display: none"
+      ></div>
     </div>
   </div>
 </template>
@@ -13,46 +25,34 @@
 import { defaultInitCesium } from "../../assets/js/MapInit";
 import CesiumNavigation from "cesium-navigation-es6";
 import { mapControl } from "../../assets/js/tool/MapControl";
+import { createHeatMap } from "../../assets/js/AddHeatMap";
 import targetForLocationComponent from "../targets/TargetLocation.vue";
+import sceneModeComponent from "./SceneMode.vue";
 var Cesium = require("cesium/Cesium");
 export default {
   data() {
     return {
       mapViewer: null,
-      targetLocationShow: false,
+      targetLocationShow: false, // 经纬度视角高度实时展示
+      screenMode: false, // 2D，3D模块展示
       imgURL: require("@/assets/img/timg1.png"),
     };
   },
   components: {
     targetForLocationComponent,
+    sceneModeComponent,
   },
   mounted() {
-    this.mapViewer = defaultInitCesium(
-      "cesium-mapViewer",
-      "google",
-      true,
-      "3D"
-    );
-    this.mapViewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
-    this.mapViewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
+    this.mapViewer = this.initCesium();
 
-    // 开启地图高程
-    var terrainProvider = Cesium.createWorldTerrain({
-      requestVertexNormals: true,
-      requestWaterMask: false,
-    });
-    this.mapViewer.terrainProvider = terrainProvider;
-    this.mapViewer.scene.globe.depthTestAgainstTerrain = true; // true有高程遮挡
-
-    // 显示刷新率和帧率
-    this.mapViewer.scene.debugShowFramesPerSecond = true;
     mapControl(this.mapViewer, {
       lng: 115.435314,
       lat: 39.960521,
       height: 5000000.0,
     });
     this.targetLocationShow = true;
-    // this.mapViewer.scene.morphTo3D(0); // 2D 3D 切换
+    this.screenMode = true;
+    // this.mapViewer.scene.morphTo3D(1); // 2D 3D 切换
 
     // 创建热力图
     var bounds = {
@@ -62,13 +62,47 @@ export default {
       north: 50.0,
     };
     // createHeatMap(this.mapViewer, bounds);
+    // document.querySelector("#test").style.backgroundImage =
+    //   "url('tianxia.png')";
   },
-  methods: {},
+  methods: {
+    initCesium() {
+      const viewer = defaultInitCesium(
+        "cesium-mapViewer",
+        "google",
+        true,
+        "3D"
+      );
+      viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
+      viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
+
+      // 开启地图高程
+      var terrainProvider = Cesium.createWorldTerrain({
+        requestVertexNormals: true,
+        requestWaterMask: false,
+      });
+      viewer.terrainProvider = terrainProvider;
+      viewer.scene.globe.depthTestAgainstTerrain = true; // true有高程遮挡
+
+      // 显示刷新率和帧率
+      viewer.scene.debugShowFramesPerSecond = true;
+      // this.mapViewer.scene.morphTo3D(0); // 2D 3D 切换
+      return viewer;
+    },
+  },
 };
 </script>
 
 <style scoped>
 @import url(../../assets/css/cesiumNavgation.css);
+#test {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background-color: red;
+}
 
 .home-container {
   width: 100%;

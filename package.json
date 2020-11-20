@@ -1,9 +1,10 @@
 {
-    "name": "123445",
+    "name": "vue3.0-demo",
     "version": "0.1.0",
     "private": true,
     "scripts": {
         "dev": "vue-cli-service serve --mode dev",
+        "qa": "vue-cli-service serve --mode qa",
         "serve": "vue-cli-service serve --mode dev",
         "build": "vue-cli-service build --mode prod",
         "build--qa": "vue-cli-service build --mode qa",
