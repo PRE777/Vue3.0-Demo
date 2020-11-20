@@ -1,5 +1,5 @@
 var Cesium = require('cesium/Cesium');
-// import { BaiduImageryProvider } from './BaiduImageryProvider'
+import { BaiduImageryProvider } from './BaiduImageryProvider'
 // import { wmsUrl } from '../../request/env.js'
 
 /**
@@ -22,7 +22,7 @@ export function defaultInitCesium(id, mapType, isImage, sceneModeType = '3D', op
     } else if (mapType == 'Amap') {
         imageryProvider = isImage ? getAmapImageProvider() : getAmapStreetProvider();
     } else if (mapType == 'baidu') {
-        // imageryProvider = getBaiDuProvider();
+        imageryProvider = getBaiDuProvider();
     } else if (mapType == 'google') {
         imageryProvider = isImage ? getGoogleImageProvider() : getGoogleStreetProvider();
     } else if (mapType == 'wms') {
@@ -67,7 +67,7 @@ export function defaultInitCesium(id, mapType, isImage, sceneModeType = '3D', op
     viewer.scene.postProcessStages.fxaa.enabled = false;
 
     if (mapType != "baidu") {
-        addImageryProvider(viewer, mapType);
+        // addImageryProvider(viewer, mapType);
     }
 
     // 设置最大缩放级别
@@ -75,7 +75,6 @@ export function defaultInitCesium(id, mapType, isImage, sceneModeType = '3D', op
     //     viewer.scene.screenSpaceCameraController.minimumZoomDistance = 310;
     // }
     // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000;
-
     return viewer
 }
 
@@ -188,20 +187,19 @@ function addImageryProvider(targetViewer, mapType) {
         case 'Amap':
             imageryProvider = new Cesium.UrlTemplateImageryProvider({
                 url: "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8",
-                layer: "tdtAnnoLayer",
-                style: "default",
-                format: "image/jpeg",
-                tileMatrixSetID: "GoogleMapsCompatible"
             })
             targetViewer.imageryLayers.addImageryProvider(imageryProvider);
             break;
         case 'baidu':
             imageryProvider = new Cesium.UrlTemplateImageryProvider({
                 url: "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8",
-                layer: "tdtAnnoLayer",
-                style: "default",
-                format: "image/jpeg",
-                tileMatrixSetID: "GoogleMapsCompatible"
+            })
+            targetViewer.imageryLayers.addImageryProvider(imageryProvider);
+            break;
+        case "google":
+            imageryProvider = new Cesium.UrlTemplateImageryProvider({
+                // url: 'http://mt2.google.cn/vt/lyrs=y&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=G'
+                url: "http://mt1.google.cn/vt/lyrs=y&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
             })
             targetViewer.imageryLayers.addImageryProvider(imageryProvider);
             break;

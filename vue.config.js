@@ -15,7 +15,7 @@ module.exports = {
     lintOnSave: false,
     devServer: {
         host: "0.0.0.0",
-        port: 8088,
+        port: 8089,
         https: false,
         disableHostCheck: true, // 处理host不识别问题
         open: true, //自动打开浏览器

@@ -28,6 +28,9 @@ import { mapControl } from "../../assets/js/tool/MapControl";
 import targetForLocationComponent from "../targets/TargetLocation.vue";
 import sceneModeComponent from "./SceneMode.vue";
 var Cesium = require("cesium/Cesium");
+var Tiff = require('tiff.js');
+var fs = require('fs');
+
 export default {
   data() {
     return {
