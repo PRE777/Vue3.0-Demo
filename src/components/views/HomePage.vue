@@ -10,7 +10,7 @@
         :mapViewer="mapViewer"
         v-if="screenMode"
       ></scene-mode-component>
-      <!-- vue2.0 图片为放在static文件下，vue3.0 图片未放在public下（未放在静态文件夹下），用以下方式加载图片（必须用require） -->
+      <!-- vue2.0 图片未放在static文件下，vue3.0 图片未放在public下（未放在静态文件夹下），用以下方式加载图片（必须用require） -->
       <div
         id="test"
         :style="{
@@ -18,6 +18,8 @@
         }"
         style="display: none"
       ></div>
+
+      <!-- <el-button type="primary" @click="tiles_clicked()"> 3D Tiles </el-button> -->
     </div>
   </div>
 </template>
@@ -27,9 +29,13 @@ import CesiumNavigation from "cesium-navigation-es6";
 import { mapControl } from "../../assets/js/tool/MapControl";
 import targetForLocationComponent from "../targets/TargetLocation.vue";
 import sceneModeComponent from "./SceneMode.vue";
+import {
+  init_CzmlDataSource,
+  multi_part_czml,
+} from "../../assets/js/Test3Dtile";
 var Cesium = require("cesium/Cesium");
-var Tiff = require('tiff.js');
-var fs = require('fs');
+var Tiff = require("tiff.js");
+var fs = require("fs");
 
 export default {
   data() {
@@ -78,7 +84,7 @@ export default {
       viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
       viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
-      // 开启地图高程
+      // 开启地图高程;
       var terrainProvider = Cesium.createWorldTerrain({
         requestVertexNormals: true,
         requestWaterMask: false,
@@ -90,6 +96,10 @@ export default {
       viewer.scene.debugShowFramesPerSecond = true;
       // this.mapViewer.scene.morphTo3D(0); // 2D 3D 切换
       return viewer;
+    },
+    tiles_clicked() {
+      init_CzmlDataSource(this.mapViewer);
+      //   multi_part_czml(this.mapViewer);
     },
   },
 };
@@ -128,5 +138,18 @@ export default {
   position: relative;
   background: rgba(3, 195, 255, 0.1);
   border: 1px solid rgb(60, 117, 219);
+}
+
+.el-button--primary {
+  color: #fff;
+  background: rgba(10, 73, 107, 1) !important;
+  border: 1px solid rgba(3, 195, 255, 1) !important;
+  width: 100px;
+  height: 30px;
+  cursor: pointer;
+  margin: 0 10px !important;
+  position: absolute;
+  left: 100px;
+  top: 100px;
 }
 </style>

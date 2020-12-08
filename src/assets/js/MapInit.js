@@ -47,6 +47,8 @@ export function defaultInitCesium(id, mapType, isImage, sceneModeType = '3D', op
         selectionIndicator: false, // 是否显示选取指示器组件 
         imageryProvider: imageryProvider,
         showRenderLoopErrors: false,
+        shouldAnimate: true,
+
     }
 
     if (options && completionByDefaultOptions) {
