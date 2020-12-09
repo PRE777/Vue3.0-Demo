@@ -20,7 +20,7 @@ Vue.config.productionTip = false
 Vue.prototype.$bus = Bus;
 Vue.use(ElementUI, { size: 'small', zIndex: 30000 });
 
-Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3OGQzMWE0MS1lYTA2LTRiZTYtYjFhZi1lMzk5ZDFmMDIwYmEiLCJpZCI6NDM1MCwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0MDU0MTEyNH0.se2dXmT555bSEa8wk7X1nnSxcxoAt0r-ERj65H9sgEc";
+Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0OTcwMjNhMy00YjM0LTRiZDEtYTg4OC0yN2MzYzE4OTc0N2QiLCJpZCI6MzkzNjMsImlhdCI6MTYwNzQ5NDY0OX0.Exc3GIhxfnLy36_cHEczqrT-ZeBcvf6Kxk4p9Qj5zv0";
 
 
 
