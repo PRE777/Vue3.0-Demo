@@ -36,7 +36,7 @@ export function defaultInitCesium(id, mapType, isImage, sceneModeType = '3D', op
         sceneMode: sceneMode,
         animation: false, // 是否创建动画小器件，左下角仪表
         timeline: false, // 是否显示时间轴
-        fullscreenButton: false, // 是否显示全屏按钮
+        fullscreenButton: true, // 是否显示全屏按钮
         geocoder: false, // 是否显示geocoder小器件，右上角查询按钮
         homeButton: false,
         skyAtmosphere: false, // 大气层

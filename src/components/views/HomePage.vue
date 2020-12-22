@@ -29,10 +29,7 @@ import CesiumNavigation from "cesium-navigation-es6";
 import { mapControl } from "../../assets/js/tool/MapControl";
 import targetForLocationComponent from "../targets/TargetLocation.vue";
 import sceneModeComponent from "./SceneMode.vue";
-import {
-  init_CzmlDataSource,
-  multi_part_czml,
-} from "../../assets/js/Test3Dtile";
+import { init_CzmlDataSource, multi_part_czml } from "../../assets/js/Test3Dtile";
 var Cesium = require("cesium/Cesium");
 var Tiff = require("tiff.js");
 var fs = require("fs");
@@ -52,7 +49,6 @@ export default {
   },
   mounted() {
     this.mapViewer = this.initCesium();
-
     mapControl(this.mapViewer, {
       lng: 115.435314,
       lat: 39.960521,
@@ -72,15 +68,11 @@ export default {
     // createHeatMap(this.mapViewer, bounds);
     // document.querySelector("#test").style.backgroundImage =
     //   "url('tianxia.png')";
+    this.outer();
   },
   methods: {
     initCesium() {
-      const viewer = defaultInitCesium(
-        "cesium-mapViewer",
-        "google",
-        true,
-        "3D"
-      );
+      const viewer = defaultInitCesium("cesium-mapViewer", "google", true, "3D");
       viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
       viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
@@ -100,6 +92,17 @@ export default {
     tiles_clicked() {
       init_CzmlDataSource(this.mapViewer);
       //   multi_part_czml(this.mapViewer);
+    },
+    outer() {
+      var object = {
+        name: "object",
+        getName: function () {
+          return function () {
+            console.info(this.name);
+          };
+        },
+      };
+      object.getName().bind(object)();
     },
   },
 };

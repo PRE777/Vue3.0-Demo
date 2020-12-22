@@ -8,8 +8,7 @@ module.exports = {
     // publicPath: process.env.NODE_ENV === 'production' ? './' : './',
     publicPath: './',
     assetsDir: 'static',
-    // outputDir: process.env.outputDir,
-    outputDir: "dist1",
+    outputDir: process.env.outputDir,
 
     // 避免Eslint报错
     lintOnSave: false,
