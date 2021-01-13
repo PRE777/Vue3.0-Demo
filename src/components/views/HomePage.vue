@@ -35,8 +35,8 @@ import targetForLocationComponent from "../targets/TargetLocation.vue";
 import sceneModeComponent from "./SceneMode.vue";
 import { init_CzmlDataSource, multi_part_czml } from "../../assets/js/Test3Dtile";
 
-var heatmap = require("heatmap.js/build/heatmap");
-
+// var heatmap = require("heatmap.js/build/heatmap");
+import { heatmapCreate, heatmapRemove } from "../../assets/js/tool/heatmapEvent";
 var Cesium = require("cesium/Cesium");
 var Tiff = require("tiff.js");
 var fs = require("fs");
@@ -114,82 +114,10 @@ export default {
     showHeatMap(val) {
       if (val) {
         // 展示
-        this.heatmapCreate();
+        heatmapCreate(this.mapViewer);
       } else {
         // 隐藏
-        this.heatmapRemove();
-      }
-    },
-    heatmapCreate() {
-      var len = 300;
-      var points = [];
-      var max = 100;
-
-      //热力图图片大小
-      var width = 600;
-      var height = 400;
-
-      //点坐标的矩形范围
-      var latMin = 28.364807;
-      var latMax = 40.251095;
-      var lonMin = 94.389228;
-      var lonMax = 108.666357;
-
-      //随机创建300个点（经度、纬度、热力值）
-      var dataRaw = [];
-      for (var i = 0; i < len; i++) {
-        var point = {
-          lat: latMin + Math.random() * (latMax - latMin),
-          lon: lonMin + Math.random() * (lonMax - lonMin),
-          value: Math.floor(Math.random() * 100),
-        };
-        dataRaw.push(point);
-      }
-      //随机创建300个点（x、y、热力值）
-      for (var i = 0; i < len; i++) {
-        var dataItem = dataRaw[i];
-        var point = {
-          x: Math.floor(((dataItem.lat - latMin) / (latMax - latMin)) * width),
-          y: Math.floor(((dataItem.lon - lonMin) / (lonMax - lonMin)) * height),
-          value: Math.floor(dataItem.value),
-        };
-        max = Math.max(max, dataItem.value);
-        points.push(point);
-      }
-      //   module.exports
-      let heatDoc = document.createElement("div");
-      heatDoc.setAttribute(
-        "style",
-        "width:600px;height:400px;margin: 0px;display: none;"
-      );
-      document.body.appendChild(heatDoc);
-      this.heatmapInstance = heatmap.create({
-        // container: document.querySelector("#heatmap"),
-        container: heatDoc,
-      });
-      var data = {
-        max: max,
-        data: points,
-      };
-      this.heatmapInstance.setData(data);
-      var canvas = document.getElementsByClassName("heatmap-canvas");
-      this.heatmapEntities = this.mapViewer.entities.add({
-        name: "heatmap",
-        rectangle: {
-          coordinates: Cesium.Rectangle.fromDegrees(lonMin, latMin, lonMax, latMax),
-          material: new Cesium.ImageMaterialProperty({
-            image: canvas[0],
-            transparent: true,
-          }),
-        },
-      });
-
-      this.mapViewer.zoomTo(this.heatmapEntities);
-    },
-    heatmapRemove() {
-      if (this.heatmapEntities) {
-        this.mapViewer.entities.remove(this.heatmapEntities);
-        this.heatmapEntities = null;
+        heatmapRemove(this.mapViewer);
       }
     },
   },
