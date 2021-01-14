@@ -24,6 +24,10 @@
         <el-button @click="showHeatMap(true)">展示</el-button>
         <el-button @click="showHeatMap(false)">隐藏</el-button>
       </div>
+      <div class="clusteringPoint">
+        <el-button @click="showClusteringPoint(true)">展示点</el-button>
+        <el-button @click="showClusteringPoint(false)">隐藏点</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +41,8 @@ import { init_CzmlDataSource, multi_part_czml } from "../../assets/js/Test3Dtile
 
 // var heatmap = require("heatmap.js/build/heatmap");
 import { heatmapCreate, heatmapRemove } from "../../assets/js/tool/heatmapEvent";
+import { addDataSources } from "../../assets/js/tool/pointClustering";
+// import {  } from "../../assets/JsonSource/";
 var Cesium = require("cesium/Cesium");
 var Tiff = require("tiff.js");
 var fs = require("fs");
@@ -79,7 +85,7 @@ export default {
   },
   methods: {
     initCesium() {
-      const viewer = defaultInitCesium("cesium-mapViewer", "tianDitu", true, "3D");
+      const viewer = defaultInitCesium("cesium-mapViewer", "google", true, "3D");
       viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
       viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
@@ -118,6 +124,18 @@ export default {
       } else {
         // 隐藏
         heatmapRemove(this.mapViewer);
+      }
+    },
+    showClusteringPoint(val) {
+      if (val) {
+        // 展示
+        // 取消地形遮挡
+        this.mapViewer.scene.globe.depthTestAgainstTerrain = false;
+        let data = require("../../assets/JsonSource/points.json");
+        addDataSources(this.mapViewer, data);
+      } else {
+        // 隐藏
+        this.mapViewer.scene.globe.depthTestAgainstTerrain = true;
       }
     },
   },
@@ -175,6 +193,16 @@ export default {
   position: absolute;
   left: 10px;
   top: 10px;
+  height: 50px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+.clusteringPoint {
+  position: absolute;
+  left: 10px;
+  top: 70px;
   height: 50px;
   width: 150px;
   display: flex;

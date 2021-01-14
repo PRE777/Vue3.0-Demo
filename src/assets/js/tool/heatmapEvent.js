@@ -3,7 +3,7 @@ let Cesium = require("cesium/Cesium");
 let heatmapEntities = undefined;
 
 export function heatmapCreate(viewer) {
-    var len = 300;
+    var len = 400;
     var points = [];
     var max = 100;
 
@@ -12,13 +12,14 @@ export function heatmapCreate(viewer) {
     var height = 400;
 
     //点坐标的矩形范围
-    var latMin = 39.364807;
-    var latMax = 41.251095;
-    var lonMin = 115.389228;
-    var lonMax = 117.666357;
+    var latMin = 20.364807;
+    var latMax = 44.251095;
+    var lonMin = 100.389228;
+    var lonMax = 122.666357;
 
     //随机创建 len 个点（经度、纬度、热力值）
     var dataRaw = [];
+    // var test = [];
     for (var i = 0; i < len; i++) {
         var point = {
             lat: latMin + Math.random() * (latMax - latMin),
@@ -26,7 +27,11 @@ export function heatmapCreate(viewer) {
             value: Math.floor(Math.random() * 100),
         };
         dataRaw.push(point);
+        // const point1 = [point.lon, point.lat];
+        // test.push(point1)
     }
+    // console.log(JSON.stringify(test));
+    // debugger
     //随机创建300个点（x、y、热力值）
     for (var i = 0; i < len; i++) {
         var dataItem = dataRaw[i];
