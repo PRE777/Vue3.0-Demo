@@ -41,7 +41,10 @@ import { init_CzmlDataSource, multi_part_czml } from "../../assets/js/Test3Dtile
 
 // var heatmap = require("heatmap.js/build/heatmap");
 import { heatmapCreate, heatmapRemove } from "../../assets/js/tool/heatmapEvent";
-import { addDataSources } from "../../assets/js/tool/pointClustering";
+import {
+  addDataSources,
+  distoryPointsEntities,
+} from "../../assets/js/tool/pointClustering";
 // import {  } from "../../assets/JsonSource/";
 var Cesium = require("cesium/Cesium");
 var Tiff = require("tiff.js");
@@ -85,7 +88,7 @@ export default {
   },
   methods: {
     initCesium() {
-      const viewer = defaultInitCesium("cesium-mapViewer", "google", true, "3D");
+      const viewer = defaultInitCesium("cesium-mapViewer", "Amap", true, "3D");
       viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
       viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
@@ -136,6 +139,7 @@ export default {
       } else {
         // 隐藏
         this.mapViewer.scene.globe.depthTestAgainstTerrain = true;
+        distoryPointsEntities(this.mapViewer);
       }
     },
   },
