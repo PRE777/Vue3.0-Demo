@@ -8,18 +8,10 @@ export function addDataSources(viewer, data) {
     }
     distoryPointsEntities(viewer);
     let options = {
-            camera: viewer.scene.camera,
-            canvas: viewer.scene.canvas,
-            clampToGround: false,
-        }
-        // let dataSourcePromise = viewer.dataSource.add(
-        //     // Cesium.KmlDataSource.load(path, options)
-        //     Cesium.DataSource.load(path, options)
-        // );
-        // dataSourcePromise.then((dataSource) => {
-        //     afterAddDataSource(dataSource)
-        // });
-
+        camera: viewer.scene.camera,
+        canvas: viewer.scene.canvas,
+        clampToGround: false,
+    }
     let dataSourcePromise = Cesium.GeoJsonDataSource.load(data, options);
     dataSourcePromise.then((dataSource) => {
         myDataSource = dataSource;
@@ -44,7 +36,7 @@ export function distoryPointsEntities(viewer) {
 }
 
 function afterAddDataSource(dataSource) {
-    let pixelRange = 40; // 聚合距离 40像素
+    let pixelRange = 30; // 聚合距离 30像素
     let minimumClusterSize = 2; // 是每个聚合点的最小聚合个数，这个值最好是设置为2
     let enabled = true; // 是否聚合
     dataSource.clustering.enabled = enabled;
@@ -101,29 +93,29 @@ function afterAddDataSource(dataSource) {
                     cluster.billboard.verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
                     let length = clusteringEntities.length;
                     if (length >= 100) {
-                        combineNewIcon(pin100, "100+").then(img => {
+                        combineNewIcon(pin100, length).then(img => {
                             cluster.billboard.image = img;
                         });
                     } else if (length >= 50) {
-                        combineNewIcon(pin50, "50+").then(img => {
+                        combineNewIcon(pin50, length).then(img => {
                             cluster.billboard.image = img;
                         });
                     } else if (length >= 40) {
-                        combineNewIcon(pin40, "40+").then(img => {
+                        combineNewIcon(pin40, length).then(img => {
                             cluster.billboard.image = img;
                         });
                     } else if (length >= 30) {
-                        combineNewIcon(pin30, "30+").then(img => {
+                        combineNewIcon(pin30, length).then(img => {
                             cluster.billboard.image = img;
                         });
 
                     } else if (length >= 20) {
-                        combineNewIcon(pin20, "20+").then(img => {
+                        combineNewIcon(pin20, length).then(img => {
                             cluster.billboard.image = img;
                         });
 
                     } else if (length >= 10) {
-                        combineNewIcon(pin10, "10+").then(img => {
+                        combineNewIcon(pin10, length).then(img => {
                             cluster.billboard.image = img;
                         });
                     } else {
