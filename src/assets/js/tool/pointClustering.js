@@ -121,7 +121,6 @@ function afterAddDataSource(dataSource) {
                     } else {
                         cluster.billboard.image = singleDigitPins[clusteringEntities.length - 2];
                         // cluster.billboard.image = pinBuilder.fromText(length, Cesium.Color.VIOLET, 40).toDataURL()
-                        // cluster.billboard.image = require("../../img/pinbuilder/camera.png");
                     }
                 }
             );

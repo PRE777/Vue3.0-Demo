@@ -18,56 +18,46 @@ export default {
     };
   },
   mounted() {
-    var handler = new Cesium.ScreenSpaceEventHandler(
-      this.mapViewer.scene.canvas
-    );
-    let that = this;
+    var handler = new Cesium.ScreenSpaceEventHandler(this.mapViewer.scene.canvas);
+    // let that = this;
     let ellipsoid = this.mapViewer.scene.globe.ellipsoid;
-    handler.setInputAction(function (movement) {
-      var earthCartesian = that.mapViewer.camera.pickEllipsoid(
+    handler.setInputAction((movement) => {
+      var earthCartesian = this.mapViewer.camera.pickEllipsoid(
         movement.endPosition,
         ellipsoid
       );
-
       if (earthCartesian) {
         var cartographic = ellipsoid.cartesianToCartographic(earthCartesian);
-        that.lng = Cesium.Math.toDegrees(cartographic.longitude).toFixed(4);
-        that.lat = Cesium.Math.toDegrees(cartographic.latitude).toFixed(4);
-        let height = Math.ceil(
-          that.mapViewer.camera.positionCartographic.height
-        );
-        that.geo_level = getLevelForHeight(height);
+        this.lng = Cesium.Math.toDegrees(cartographic.longitude).toFixed(4);
+        this.lat = Cesium.Math.toDegrees(cartographic.latitude).toFixed(4);
+        let height = Math.ceil(this.mapViewer.camera.positionCartographic.height);
+        this.geo_level = getLevelForHeight(height);
 
         // let altitude = that.mapViewer.scene.globe.getHeight(cartographic); // 获取海拔高度，只有开启地形高程才精确
-        that.cameraHeight =
-          height > 1000
-            ? (height / 1000).toFixed(3) + "千米"
-            : height.toFixed(2) + "米";
+        this.cameraHeight =
+          height > 1000 ? (height / 1000).toFixed(3) + "千米" : height.toFixed(2) + "米";
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     //设置鼠标滚动事件的处理函数，这里负责监听高度值变化
-    handler.setInputAction(function (wheelment) {
-      let height = Math.ceil(that.mapViewer.camera.positionCartographic.height);
-      that.geo_level = getLevelForHeight(height);
+    handler.setInputAction((wheelment) => {
+      let height = Math.ceil(this.mapViewer.camera.positionCartographic.height);
+      this.geo_level = getLevelForHeight(height);
 
-      that.cameraHeight =
-        height > 1000
-          ? (height / 1000).toFixed(3) + "千米"
-          : height.toFixed(2) + "米";
+      this.cameraHeight =
+        height > 1000 ? (height / 1000).toFixed(3) + "千米" : height.toFixed(2) + "米";
     }, Cesium.ScreenSpaceEventType.WHEEL);
 
     // 监听地图移动结束
     this.mapViewer.scene.camera.moveEnd.addEventListener(() => {
-      let height = Math.ceil(that.mapViewer.camera.positionCartographic.height);
-      that.geo_level = getLevelForHeight(height);
+      let height = Math.ceil(this.mapViewer.camera.positionCartographic.height);
+      this.geo_level = getLevelForHeight(height);
 
-      that.cameraHeight =
-        height > 1000
-          ? (height / 1000).toFixed(3) + "千米"
-          : height.toFixed(2) + "米";
+      this.cameraHeight =
+        height > 1000 ? (height / 1000).toFixed(3) + "千米" : height.toFixed(2) + "米";
     });
   },
+
   methods: {},
 };
 </script>

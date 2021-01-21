@@ -32,20 +32,18 @@
   </div>
 </template>
 <script>
-import { defaultInitCesium } from "../../assets/js/MapInit";
-import CesiumNavigation from "cesium-navigation-es6";
-import { mapControl } from "../../assets/js/tool/MapControl";
-import targetForLocationComponent from "../targets/TargetLocation.vue";
-import sceneModeComponent from "./SceneMode.vue";
-import { init_CzmlDataSource, multi_part_czml } from "../../assets/js/Test3Dtile";
+import { defaultInitCesium } from "../assets/js/MapInit";
+import { mapControl } from "../assets/js/tool/MapControl";
+import targetForLocationComponent from "../components/targets/TargetLocation.vue";
+import sceneModeComponent from "../components/SceneMode.vue";
+import { init_CzmlDataSource, multi_part_czml } from "../assets/js/Test3Dtile";
 
 // var heatmap = require("heatmap.js/build/heatmap");
-import { heatmapCreate, heatmapRemove } from "../../assets/js/tool/heatmapEvent";
+import { heatmapCreate, heatmapRemove } from "../assets/js/tool/heatmapEvent";
 import {
   addDataSources,
   distoryPointsEntities,
-} from "../../assets/js/tool/pointClustering";
-// import {  } from "../../assets/JsonSource/";
+} from "../assets/js/tool/pointClustering";
 var Cesium = require("cesium/Cesium");
 var Tiff = require("tiff.js");
 var fs = require("fs");
@@ -73,18 +71,9 @@ export default {
     this.targetLocationShow = true;
     this.screenMode = true;
     // this.mapViewer.scene.morphTo3D(1); // 2D 3D 切换
-
-    // 创建热力图
-    var bounds = {
-      west: -109.0,
-      south: 30.0,
-      east: -80.0,
-      north: 50.0,
-    };
-    // createHeatMap(this.mapViewer, bounds);
-    // document.querySelector("#test").style.backgroundImage =
-    //   "url('tianxia.png')";
     this.outer();
+
+    // this.drawLatLine();
   },
   methods: {
     initCesium() {
@@ -107,7 +96,6 @@ export default {
     },
     tiles_clicked() {
       init_CzmlDataSource(this.mapViewer);
-      //   multi_part_czml(this.mapViewer);
     },
     outer() {
       var object = {
@@ -134,7 +122,7 @@ export default {
         // 展示
         // 取消地形遮挡
         this.mapViewer.scene.globe.depthTestAgainstTerrain = false;
-        let data = require("../../assets/JsonSource/points.json");
+        let data = require("../assets/JsonSource/points.json");
         addDataSources(this.mapViewer, data);
       } else {
         // 隐藏
@@ -142,12 +130,37 @@ export default {
         distoryPointsEntities(this.mapViewer);
       }
     },
+
+    drawLatLine() {
+      // 画纬度线
+      let positions = [];
+      let coordinates = [];
+      let lats = [];
+      for (let lat = -90; lat <= 90; lat++) {
+        // lats.push(lat);
+        for (let lng = -180; lng <= 180; lng++) {
+          coordinates.push(lng);
+          coordinates.push(lat);
+          coordinates.push(500000.0);
+        }
+      }
+      // positions = Cesium.Cartesian3.fromDegreesArray(coordinates);
+      positions = Cesium.Cartesian3.fromDegreesArrayHeights(coordinates);
+
+      this.mapViewer.entities.add({
+        polyline: {
+          positions: positions,
+          width: 2.0,
+          material: Cesium.Color.RED,
+        },
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-@import url(../../assets/css/cesiumNavgation.css);
+@import url(../assets/css/cesiumNavgation.css);
 #test {
   width: 200px;
   height: 200px;
