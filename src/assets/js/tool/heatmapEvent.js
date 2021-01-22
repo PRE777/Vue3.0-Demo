@@ -1,4 +1,4 @@
-let heatmap = require("heatmap.js/build/heatmap");
+// let heatmap = require("heatmap.js/build/heatmap");
 let Cesium = require("cesium/Cesium");
 let heatmapEntities = undefined;
 
