@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <div id="nav">
+      <router-link to="/">HomePage</router-link> |
+      <router-link to="/secondPage">SecondPage</router-link>
+    </div>
     <router-view />
   </div>
 </template>
@@ -9,6 +13,7 @@ export default {
   name: "App",
   components: {},
 };
+// lang="scss"
 </script>
 
 <style>
@@ -35,5 +40,8 @@ body {
   min-width: 1200px;
   min-height: 675px;
   position: relative;
+}
+#nav {
+  padding: 30px;
 }
 </style>

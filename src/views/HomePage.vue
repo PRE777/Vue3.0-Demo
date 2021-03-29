@@ -28,6 +28,7 @@
         <el-button @click="showClusteringPoint(true)">展示点</el-button>
         <el-button @click="showClusteringPoint(false)">隐藏点</el-button>
       </div>
+      
     </div>
   </div>
 </template>
@@ -40,10 +41,7 @@ import { init_CzmlDataSource, multi_part_czml } from "../assets/js/Test3Dtile";
 
 // var heatmap = require("heatmap.js/build/heatmap");
 import { heatmapCreate, heatmapRemove } from "../assets/js/tool/heatmapEvent";
-import {
-  addDataSources,
-  distoryPointsEntities,
-} from "../assets/js/tool/pointClustering";
+import { addDataSources, distoryPointsEntities } from "../assets/js/tool/pointClustering";
 var Cesium = require("cesium/Cesium");
 var Tiff = require("tiff.js");
 var fs = require("fs");

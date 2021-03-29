@@ -41,7 +41,7 @@ module.exports = {
             new CopyWebpackPlugin([{ from: path.join(cesiumSource, 'ThirdParty/Workers'), to: 'ThirdParty/Workers' }]),
             new webpack.DefinePlugin({
                 // Define relative base path in cesium for loading assets
-                CESIUM_BASE_URL: JSON.stringify('')
+                CESIUM_BASE_URL: JSON.stringify('/')
             })
         ],
         module: {
@@ -65,6 +65,17 @@ module.exports = {
                 args[0].title = 'Vue3.0测试demo'
                 return args
             })
+            // config.module
+            //     .rule('less')
+            //     .use('less-loader')
+            //     .loader('less-loader')
+            //     .options({
+            //         lessOptions: {
+            //             /**less-loader 配置 */
+            //             strictMath: true,
+            //             noIeCompat: true
+            //         }
+            //     })
     },
     /* 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度 */
     productionSourceMap: false,
