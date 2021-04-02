@@ -28,7 +28,6 @@
         <el-button @click="showClusteringPoint(true)">展示点</el-button>
         <el-button @click="showClusteringPoint(false)">隐藏点</el-button>
       </div>
-      
     </div>
   </div>
 </template>
@@ -72,6 +71,34 @@ export default {
     this.outer();
 
     // this.drawLatLine();
+    // message 事件，监听其它页面 postMessage 发送过来的消息
+    window.addEventListener(
+      "message",
+      function (e) {
+        if (e.data.type === "webpackOk") {
+          return;
+        }
+        if (e.data) {
+          debugger;
+          // 通过监听message事件，可以监听对方发送的消息。
+          console.log(e.data); // 跨域请求信息
+          // 向父窗口发送消息
+          setTimeout(() => {
+            let parent = window.opener;
+            console.log(parent == e.source);
+            // 检测当前窗口是否通过其他页面打开（是否有父窗口）
+            if (parent) {
+              parent.postMessage("这条信息是子窗口发送来的", "http://localhost:8088/");
+            }
+            // if (e.source) {
+            //   // 发送消息的窗口
+            //   e.source.postMessage("这条信息是子窗口发送来的111", "*");
+            // }
+          }, 3000);
+        }
+      },
+      false
+    );
   },
   methods: {
     initCesium() {
