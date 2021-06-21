@@ -12,6 +12,9 @@
 export default {
   name: "App",
   components: {},
+  mounted() {
+
+  },
 };
 // lang="scss"
 </script>

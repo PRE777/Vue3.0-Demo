@@ -59,6 +59,11 @@ export default {
     sceneModeComponent,
   },
   mounted() {
+    //   设置window.name属性
+
+    let obj = { username: "张三", userage: 22 };
+    window.name = JSON.stringify(obj);
+
     this.mapViewer = this.initCesium();
     mapControl(this.mapViewer, {
       lng: 115.435314,
@@ -75,7 +80,7 @@ export default {
     window.addEventListener(
       "message",
       function (e) {
-        if (e.data.type === "webpackOk") {
+        if (e.data.type.indexOf("webpack") != -1) {
           return;
         }
         if (e.data) {
@@ -86,14 +91,18 @@ export default {
           setTimeout(() => {
             let parent = window.opener;
             console.log(parent == e.source);
+
+            let parent1 = window.parent; // 针对iframe来说，parent
+            console.log(parent1 == e.source);
+
             // 检测当前窗口是否通过其他页面打开（是否有父窗口）
             if (parent) {
               parent.postMessage("这条信息是子窗口发送来的", "http://localhost:8088/");
             }
-            // if (e.source) {
-            //   // 发送消息的窗口
-            //   e.source.postMessage("这条信息是子窗口发送来的111", "*");
-            // }
+            if (e.source) {
+              // 发送消息的窗口
+              e.source.postMessage("这条信息是子窗口发送来的111", e.origin);
+            }
           }, 3000);
         }
       },
