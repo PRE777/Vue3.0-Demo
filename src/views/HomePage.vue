@@ -28,6 +28,12 @@
         <el-button @click="showClusteringPoint(true)">展示点</el-button>
         <el-button @click="showClusteringPoint(false)">隐藏点</el-button>
       </div>
+      <div class="add-primitive">
+        <el-button @click="addPrimitive()">添加</el-button>
+        <el-button @click="destroyPrimitive(false)">销毁</el-button>
+        <el-button @click="addListener()">地图移动监听</el-button>
+        <el-button @click="removeListener()">移除监听</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +43,7 @@ import { mapControl } from "../assets/js/tool/MapControl";
 import targetForLocationComponent from "../components/targets/TargetLocation.vue";
 import sceneModeComponent from "../components/SceneMode.vue";
 import { init_CzmlDataSource, multi_part_czml } from "../assets/js/Test3Dtile";
+import { PrimitiveRectangle } from "../assets/js/PrimitiveRectangle";
 
 // var heatmap = require("heatmap.js/build/heatmap");
 import { heatmapCreate, heatmapRemove } from "../assets/js/tool/heatmapEvent";
@@ -74,7 +81,7 @@ export default {
     this.screenMode = true;
     // this.mapViewer.scene.morphTo3D(1); // 2D 3D 切换
     this.outer();
-
+    PrimitiveRectangle.getInstance().initializationview(this.mapViewer);
     // this.drawLatLine();
     // message 事件，监听其它页面 postMessage 发送过来的消息
     window.addEventListener(
@@ -121,7 +128,7 @@ export default {
         requestWaterMask: false,
       });
       viewer.terrainProvider = terrainProvider;
-      viewer.scene.globe.depthTestAgainstTerrain = true; // true有高程遮挡
+      //   viewer.scene.globe.depthTestAgainstTerrain = true; // true有高程遮挡
 
       // 显示刷新率和帧率
       viewer.scene.debugShowFramesPerSecond = true;
@@ -134,6 +141,7 @@ export default {
     outer() {
       var object = {
         name: "object",
+        // 计算属性
         getName: function () {
           return function () {
             console.info(this.name);
@@ -188,6 +196,23 @@ export default {
           material: Cesium.Color.RED,
         },
       });
+    },
+    // 添加primitive
+    addPrimitive() {
+      PrimitiveRectangle.getInstance().addRectangleGeometry();
+      // PrimitiveRectangle.getInstance().testAddRectangle();
+    },
+    destroyPrimitive() {
+      PrimitiveRectangle.getInstance().removeRectangleGrometry();
+    },
+    addListener() {
+      this.mapViewer.scene.camera.moveEnd.addEventListener(this.eventListener);
+    },
+    eventListener() {
+      PrimitiveRectangle.getInstance().addRectangleGeometry();
+    },
+    removeListener() {
+      this.mapViewer.scene.camera.moveEnd.removeEventListener(this.eventListener);
     },
   },
 };
@@ -256,6 +281,16 @@ export default {
   top: 70px;
   height: 50px;
   width: 150px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+.add-primitive {
+  position: absolute;
+  left: 10px;
+  top: 130px;
+  height: 50px;
+  width: 200px;
   display: flex;
   align-items: center;
   justify-items: center;
