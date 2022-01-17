@@ -27,4 +27,11 @@ export function mapControl(viewer, originalPosition = null) {
     // 用于启用或禁用指南针外环。true是启用，false是禁用。默认值为true。如果将选项设置为false，则该环将可见但无效。
     options.enableCompassOuterRing = true;
     CesiumNavigation(viewer, options);
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(
+          originalPosition.lng,
+          originalPosition.lat,
+          originalPosition.height
+        ),
+    });
 }
