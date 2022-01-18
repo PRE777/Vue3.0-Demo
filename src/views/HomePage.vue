@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     initCesium() {
-      const viewer = defaultInitCesium("cesium-mapViewer", "Amap", true, "3D");
+      const viewer = defaultInitCesium("cesium-mapViewer", "tianDitu", true, "3D");
       viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
       viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 

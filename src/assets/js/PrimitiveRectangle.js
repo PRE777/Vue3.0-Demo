@@ -4,6 +4,7 @@ export class PrimitiveRectangle {
   constructor() {
     this.viewer = null;
     this.primitive = null;
+    this.primitiveLine = null;
   }
   initializationview(view) {
     this.viewer = view;
@@ -18,9 +19,41 @@ export class PrimitiveRectangle {
 
   // 绘制网格
   addRectangleGeometry() {
+    // let instance = new Cesium.GeometryInstance({
+    //   geometry: new Cesium.GroundPolylineGeometry({
+    //     positions: Cesium.Cartesian3.fromDegreesArray([
+    //       120,
+    //       22,
+    //       120,
+    //       20,
+    //       122,
+    //       20,
+    //       122,
+    //       22,
+    //       120,
+    //       22,
+    //     ]),
+    //     width: 4.0,
+    //   }),
+    //   id: "GroundPolylineGeometry",
+    //   attributes: {
+    //     color: Cesium.ColorGeometryInstanceAttribute.fromColor(
+    //       Cesium.Color.RED
+    //     ),
+    //   },
+    // });
+    // this.viewer.scene.primitives.add(
+    //   new Cesium.GroundPolylinePrimitive({
+    //     geometryInstances: instance,
+    //     classificationType: Cesium.ClassificationType.BOTH,
+    //     appearance: new Cesium.PolylineColorAppearance(),
+    //   })
+    // );
+
     this.removeRectangleGrometry();
     let data = getPosition();
     let instances = [];
+    let instancesLine = [];
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
       instances.push(
@@ -45,13 +78,47 @@ export class PrimitiveRectangle {
           },
         })
       );
+      instancesLine.push(
+        new Cesium.GeometryInstance({
+          geometry: new Cesium.GroundPolylineGeometry({
+            positions: Cesium.Cartesian3.fromDegreesArray([
+              item.minLng,
+              item.maxLat,
+              item.minLng,
+              item.minLat,
+              item.maxLng,
+              item.minLat,
+              item.maxLng,
+              item.maxLat,
+              item.minLng,
+              item.maxLat,
+            ]),
+            width: 1.0,
+          }),
+          id: `GroundPolyline-${i}`,
+          attributes: {
+            color: Cesium.ColorGeometryInstanceAttribute.fromColor(
+              Cesium.Color.BLACK
+            ),
+          },
+        })
+      );
     }
+
     this.primitive = new Cesium.Primitive({
       geometryInstances: instances, //合并
       //某些外观允许每个几何图形实例分别指定某个属性，例如：
       appearance: new Cesium.PerInstanceColorAppearance(),
     });
+    this.primitiveLine = new Cesium.GroundPolylinePrimitive({
+      geometryInstances: instancesLine,
+      classificationType: Cesium.ClassificationType.BOTH,
+      appearance: new Cesium.PolylineColorAppearance(),
+    });
+
     this.viewer.scene.primitives.add(this.primitive);
+    this.viewer.scene.primitives.add(this.primitiveLine);
+
     this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     let lastAttributes = null;
     let lastColor = null;
@@ -87,6 +154,9 @@ export class PrimitiveRectangle {
     if (this.primitive) {
       this.viewer.scene.primitives.remove(this.primitive);
     }
+    if (this.primitiveLine) {
+      this.viewer.scene.primitives.remove(this.primitiveLine);
+    }
     if (this.handler) {
       this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
     }
@@ -96,8 +166,8 @@ export class PrimitiveRectangle {
 
 function getPosition() {
   let minlng = 120;
-  let minlat = 22.5;
-  let maxlng = 121;
+  let minlat = 23;
+  let maxlng = 120.5;
   let maxlat = 23.5;
   let space = 0.01;
 
