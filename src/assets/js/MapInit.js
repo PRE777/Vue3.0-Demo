@@ -64,6 +64,17 @@ export function defaultInitCesium(
     imageryProvider: imageryProvider,
     showRenderLoopErrors: false,
     shouldAnimate: true,
+    contextOptions: {
+      webgl: {
+        alpha: true,
+        depth: true,
+        stencil: true,
+        antialias: true,
+        premultipliedAlpha: true,
+        preserveDrawingBuffer: true,
+        failIfMajorPerformanceCaveat: true,
+      },
+    },
   };
 
   if (options && completionByDefaultOptions) {

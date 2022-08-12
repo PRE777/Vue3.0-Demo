@@ -17,6 +17,7 @@
         "core-js": "^3.6.5",
         "element-ui": "^2.14.0",
         "heatmap.js": "^2.0.5",
+        "html2canvas": "^1.4.0",
         "jquery": "^3.5.1",
         "tiff.js": "^1.0.0",
         "vue": "^2.6.11",

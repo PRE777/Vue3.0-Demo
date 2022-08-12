@@ -47,7 +47,11 @@ import { PrimitiveRectangle } from "../assets/js/PrimitiveRectangle";
 
 // var heatmap = require("heatmap.js/build/heatmap");
 import { heatmapCreate, heatmapRemove } from "../assets/js/tool/heatmapEvent";
-import { addDataSources, distoryPointsEntities } from "../assets/js/tool/pointClustering";
+import {
+  addDataSources,
+  distoryPointsEntities,
+} from "../assets/js/tool/pointClustering";
+import html2canvas from "html2canvas";
 var Cesium = require("cesium/Cesium");
 var Tiff = require("tiff.js");
 var fs = require("fs");
@@ -86,7 +90,7 @@ export default {
     // message 事件，监听其它页面 postMessage 发送过来的消息
     window.addEventListener(
       "message",
-      function (e) {
+      function(e) {
         if (e.data.type.indexOf("webpack") != -1) {
           return;
         }
@@ -104,7 +108,10 @@ export default {
 
             // 检测当前窗口是否通过其他页面打开（是否有父窗口）
             if (parent) {
-              parent.postMessage("这条信息是子窗口发送来的", "http://localhost:8088/");
+              parent.postMessage(
+                "这条信息是子窗口发送来的",
+                "http://localhost:8088/"
+              );
             }
             if (e.source) {
               // 发送消息的窗口
@@ -118,7 +125,12 @@ export default {
   },
   methods: {
     initCesium() {
-      const viewer = defaultInitCesium("cesium-mapViewer", "tianDitu", true, "3D");
+      const viewer = defaultInitCesium(
+        "cesium-mapViewer",
+        "tianDitu",
+        true,
+        "3D"
+      );
       viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
       viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
@@ -142,8 +154,8 @@ export default {
       var object = {
         name: "object",
         // 计算属性
-        getName: function () {
-          return function () {
+        getName: function() {
+          return function() {
             console.info(this.name);
           };
         },
@@ -199,8 +211,8 @@ export default {
     },
     // 添加primitive
     addPrimitive() {
-      PrimitiveRectangle.getInstance().addRectangleGeometry();
-      // PrimitiveRectangle.getInstance().testAddRectangle();
+      // PrimitiveRectangle.getInstance().addRectangleGeometry();
+      this.screemShot();
     },
     destroyPrimitive() {
       PrimitiveRectangle.getInstance().removeRectangleGrometry();
@@ -212,10 +224,47 @@ export default {
       PrimitiveRectangle.getInstance().addRectangleGeometry();
     },
     removeListener() {
-      this.mapViewer.scene.camera.moveEnd.removeEventListener(this.eventListener);
+      this.mapViewer.scene.camera.moveEnd.removeEventListener(
+        this.eventListener
+      );
     },
+
+    screemShot() {
+      let option = {
+        scale: 1,
+        allowTaint: false,
+        useCORS: true,
+        backgroundColor: null,
+      };
+      return new Promise((resolve, reject) => {
+        try {
+          let mapDom = document
+            .getElementById("cesium-mapViewer")
+            .getElementsByTagName("canvas")
+            .item(0);
+          html2canvas(mapDom, option).then((canvas) => {
+            let url = canvas.toDataURL("image/png");
+            let link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "截图");
+            link.style.display = "none";
+            document.body.appendChild(link);
+            link.click();
+            debugger;
+            // resolve(url);
+          });
+        } catch (error) {
+          reject(error);
+        }
+      });
+    },
+
+   
   },
 };
+// try {
+
+// let mapDom = document.getElementById ("model-mapviewer").getElementsByTagName("canvas").item (0);
 </script>
 
 <style scoped>
