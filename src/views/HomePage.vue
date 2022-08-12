@@ -34,6 +34,11 @@
         <el-button @click="addListener()">地图移动监听</el-button>
         <el-button @click="removeListener()">移除监听</el-button>
       </div>
+      <div class="handlerBtn">
+        <el-button @click="startDrawHandler">开始绘制</el-button>
+        <el-button @click="clearDraw">清除绘制</el-button>
+      </div>
+      <div id="add-echart"></div>
     </div>
   </div>
 </template>
@@ -52,9 +57,9 @@ import {
   distoryPointsEntities,
 } from "../assets/js/tool/pointClustering";
 import html2canvas from "html2canvas";
+import { Profile } from "../assets/js/topographic";
+
 var Cesium = require("cesium/Cesium");
-var Tiff = require("tiff.js");
-var fs = require("fs");
 
 export default {
   data() {
@@ -63,6 +68,7 @@ export default {
       targetLocationShow: false, // 经纬度视角高度实时展示
       screenMode: false, // 2D，3D模块展示
       imgURL: require("@/assets/img/timg1.png"),
+      profile: undefined,
     };
   },
   components: {
@@ -127,12 +133,12 @@ export default {
     initCesium() {
       const viewer = defaultInitCesium(
         "cesium-mapViewer",
-        "tianDitu",
+        "Amap",
         true,
         "3D"
       );
-      viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
-      viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
+      // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
+      // viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
       // 开启地图高程;
       var terrainProvider = Cesium.createWorldTerrain({
@@ -258,8 +264,17 @@ export default {
         }
       });
     },
-
-   
+    startDrawHandler() {
+      this.clearDraw();
+      this.profile = new Profile(this.mapViewer, "add-echart");
+      this.profile.handleMouse();
+    },
+    clearDraw() {
+      if (this.profile) {
+        this.profile.clearAll();
+        this.profile = null;
+      }
+    },
   },
 };
 // try {
@@ -343,5 +358,22 @@ export default {
   display: flex;
   align-items: center;
   justify-items: center;
+}
+.handlerBtn {
+  position: absolute;
+  left: 10px;
+  top: 180px;
+  height: 50px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+#add-echart {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 200px;
 }
 </style>
