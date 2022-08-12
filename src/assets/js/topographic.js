@@ -26,10 +26,16 @@ export class Profile {
     //地图选点
     handler.setInputAction((movement) => {
       const ellipsoid = this.viewer.scene.globe.ellipsoid;
-      this.cartesian = this.viewer.camera.pickEllipsoid(
-        movement.position,
-        ellipsoid
-      );
+
+      // 世界坐标
+      // this.cartesian = this.viewer.camera.pickEllipsoid(
+      //   movement.position,
+      //   ellipsoid
+      // );
+      let ray = this.viewer.camera.getPickRay(movement.position);
+      let position1 = this.viewer.scene.globe.pick(ray, this.viewer.scene); // 地标坐标
+      // let position2 = this.viewer.scene.pickPosition(movement.position); // 场景坐标
+      this.cartesian = position1;
 
       if (this.positions.length == 0) {
         if (this.cartesian) {
@@ -87,10 +93,15 @@ export class Profile {
     //移动 线
     handler.setInputAction((movement) => {
       let ellipsoid = this.viewer.scene.globe.ellipsoid;
-      this.cartesian = this.viewer.camera.pickEllipsoid(
-        movement.endPosition,
-        ellipsoid
-      );
+      // this.cartesian = this.viewer.camera.pickEllipsoid(
+      //   movement.endPosition,
+      //   ellipsoid
+      // );
+      let ray = this.viewer.camera.getPickRay(movement.endPosition);
+      let position1 = this.viewer.scene.globe.pick(ray, this.viewer.scene); // 地标坐标
+      // let position2 = this.viewer.scene.pickPosition(movement.endPosition); // 场景坐标
+      this.cartesian = position1;
+
       if (this.positions.length >= 2) {
         if (!Cesium.defined(this.poly)) {
           this.poly = new PolyLinePrimitive(this.positions);
@@ -215,10 +226,10 @@ export class Profile {
       if (m_Cartographic1) {
         let a =
           Math.abs(m_Cartographic0.longitude - m_Cartographic1.longitude) *
-          10000000;
+          1000000;
         let b =
           Math.abs(m_Cartographic0.latitude - m_Cartographic1.latitude) *
-          10000000;
+          1000000;
         // 等距采样
         if (a > b) b = a;
         let length = parseInt(b / 2);
@@ -304,7 +315,7 @@ export class Profile {
       ProfileData.push(m_data);
       this.ProfileData_Lon.push([m_Lon, m_Lat, m_height]);
     }
-    console.log(ProfileData);
+    // console.log(ProfileData);
     let lineChart = echarts.init(document.getElementById(this.elementId));
     let lineoption = {
       title: {
