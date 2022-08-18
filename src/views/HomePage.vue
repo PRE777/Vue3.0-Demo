@@ -37,8 +37,14 @@
       <div class="handlerBtn">
         <el-button @click="startDrawHandler">开始绘制</el-button>
         <el-button @click="clearDraw">清除绘制</el-button>
+        <el-button @click="drawWall">画wall</el-button>
       </div>
       <div id="add-echart"></div>
+
+      <!-- <div class="handlerBtn">
+        <el-button @click="startDrawHandler">开始绘制</el-button>
+        <el-button @click="clearDraw">清除绘制</el-button>
+      </div> -->
     </div>
   </div>
 </template>
@@ -58,7 +64,6 @@ import {
 } from "../assets/js/tool/pointClustering";
 import html2canvas from "html2canvas";
 import { Profile } from "../assets/js/topographic";
-
 var Cesium = require("cesium/Cesium");
 
 export default {
@@ -131,12 +136,7 @@ export default {
   },
   methods: {
     initCesium() {
-      const viewer = defaultInitCesium(
-        "cesium-mapViewer",
-        "Amap",
-        true,
-        "3D"
-      );
+      const viewer = defaultInitCesium("cesium-mapViewer", "Amap", true, "3D");
       // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
       // viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
@@ -274,6 +274,28 @@ export default {
         this.profile.clearAll();
         this.profile = null;
       }
+    },
+    drawWall() {
+      // const imgUrl =
+      //   "https://t7.baidu.com/it/u=4162611394,4275913936&fm=193&f=GIF";
+      const imgUrl = require("../assets/img/elephant.jpg");
+      const redWall = this.mapViewer.entities.add({
+        name: "Red wall at height",
+        wall: {
+          positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+            110.0,
+            40.0,
+            200000,
+            115.0,
+            40.0,
+            200000,
+          ]),
+          // minimumHeights: [50000, 50000.0],
+          // maximumHeights: [150000, 150000],
+          // material: Cesium.Color.RED,
+          material: imgUrl,
+        },
+      });
     },
   },
 };
