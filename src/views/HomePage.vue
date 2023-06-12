@@ -64,6 +64,8 @@ import {
 } from "../assets/js/tool/pointClustering";
 import html2canvas from "html2canvas";
 import { Profile } from "../assets/js/topographic";
+import { DrawWall } from "../assets/js/DrawWall";
+
 var Cesium = require("cesium/Cesium");
 
 export default {
@@ -74,6 +76,7 @@ export default {
       screenMode: false, // 2D，3D模块展示
       imgURL: require("@/assets/img/timg1.png"),
       profile: undefined,
+      wall: undefined,
     };
   },
   components: {
@@ -276,6 +279,9 @@ export default {
       }
     },
     drawWall() {
+      this.wall = new DrawWall(this.mapViewer);
+      this.wall.handleMouse();
+      return;
       // const imgUrl =
       //   "https://t7.baidu.com/it/u=4162611394,4275913936&fm=193&f=GIF";
       const imgUrl = require("../assets/img/elephant.jpg");

@@ -33,9 +33,9 @@ export class Profile {
       //   ellipsoid
       // );
       let ray = this.viewer.camera.getPickRay(movement.position);
-      let position1 = this.viewer.scene.globe.pick(ray, this.viewer.scene); // 地标坐标
+      let position = this.viewer.scene.globe.pick(ray, this.viewer.scene); // 地标坐标
       // let position2 = this.viewer.scene.pickPosition(movement.position); // 场景坐标
-      this.cartesian = position1;
+      this.cartesian = position;
 
       if (this.positions.length == 0) {
         if (this.cartesian) {
@@ -98,9 +98,9 @@ export class Profile {
       //   ellipsoid
       // );
       let ray = this.viewer.camera.getPickRay(movement.endPosition);
-      let position1 = this.viewer.scene.globe.pick(ray, this.viewer.scene); // 地标坐标
+      let position = this.viewer.scene.globe.pick(ray, this.viewer.scene); // 地标坐标
       // let position2 = this.viewer.scene.pickPosition(movement.endPosition); // 场景坐标
-      this.cartesian = position1;
+      this.cartesian = position;
 
       if (this.positions.length >= 2) {
         if (!Cesium.defined(this.poly)) {
@@ -112,7 +112,6 @@ export class Profile {
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     //结束选点
-
     handler.setInputAction(() => {
       handler.destroy(); // 关闭事件句柄
       this.positions.pop(); // 最后一个点无效
@@ -120,6 +119,7 @@ export class Profile {
         this.createProfileChart(this.profileItem);
       }, 5000);
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+    
     let that = this;
     let PolyLinePrimitive = (function() {
       function _(positions) {
@@ -380,9 +380,11 @@ export class Profile {
     document.getElementById(this.elementId).style.bottom = "0";
     document.getElementById(this.elementId).style.backgroundColor = "#fff";
     document.getElementById(this.elementId).style.visibility = "visible";
-    window.addEventListener("resize", () => {
-      lineChart.resize();
-    });
+
+    $(window).resize(lineChart.resize);
+    // window.addEventListener("resize", () => {
+    //   lineChart.resize();
+    // });
   }
   //清除全部
   clearAll() {

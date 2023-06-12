@@ -1,5 +1,44 @@
 <template>
-  <div></div>
+  <div>
+    <svg width="600" height="300" style="background:#fff">
+      <!-- <rect width="20" height="20" x="20" y="10" style="fill:red">
+        <animate
+          attributeName="x"
+          values="10;50;10"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="y"
+          values="10;100;60;10"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+      </rect>
+      <rect width="20" height="20" x="20" y="40" style="fill:blue">
+        <animate
+          attributeName="x"
+          from="10"
+          to="50"
+          dur="2s"
+          repeatCount="indefinite"
+        />
+      </rect> -->
+      <rect width="20" height="20" x="100" y="100" style="fill:green">
+        <animateTransform
+          attributeName="transform"
+          begin="0s"
+          dur="3s"
+          type="scale"
+          from="1"
+          to="4"
+          repeatCount="indefinite"
+        />
+        <!--   from="0 50 100"
+          to="360 50 100" -->
+      </rect>
+    </svg>
+  </div>
 </template>
 <script>
 export default {
