@@ -196,7 +196,7 @@ export default class DrawstraightArrow {
   //箭头配置函数
   fineArrowDefualParam() {
     return {
-      tailWidthFactor: 0.10,
+      tailWidthFactor: 0.1,
       neckWidthFactor: 0.2,
       headWidthFactor: 0.25,
       headAngle: Math.PI / 8.5,
@@ -219,12 +219,9 @@ export default class DrawstraightArrow {
     let e = o[0],
       r = o[1],
       n = $this.getBaseLength(o),
-      g = n * tailWidthFactor,
-      //尾部宽度因子
-      i = n * neckWidthFactor,
-      //脖子宽度银子
-      s = n * headWidthFactor,
-      //头部宽度因子
+      g = n * tailWidthFactor,//尾部宽度因子
+      i = n * neckWidthFactor,//脖子宽度银子
+      s = n * headWidthFactor,//头部宽度因子
       a = $this.getThirdPoint(r, e, Math.PI / 2, g, !0),
       l = $this.getThirdPoint(r, e, Math.PI / 2, g, !1),
       u = $this.getThirdPoint(e, r, headAngle, s, !1),
