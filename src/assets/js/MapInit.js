@@ -61,20 +61,9 @@ export function defaultInitCesium(
     sceneModePicker: false, // 是否显示3D/2D选择器
     baseLayerPicker: false, // 是否显示图层选择器,
     selectionIndicator: false, // 是否显示选取指示器组件
-    // imageryProvider: imageryProvider,
+    imageryProvider: imageryProvider,
     showRenderLoopErrors: false,
     shouldAnimate: true,
-    contextOptions: {
-      webgl: {
-        alpha: true,
-        depth: true,
-        stencil: true,
-        antialias: true,
-        premultipliedAlpha: true,
-        preserveDrawingBuffer: true,
-        failIfMajorPerformanceCaveat: true,
-      },
-    },
   };
 
   if (options && completionByDefaultOptions) {

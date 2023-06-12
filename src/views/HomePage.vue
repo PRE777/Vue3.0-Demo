@@ -34,17 +34,10 @@
         <el-button @click="addListener()">地图移动监听</el-button>
         <el-button @click="removeListener()">移除监听</el-button>
       </div>
-      <div class="handlerBtn">
-        <el-button @click="startDrawHandler">开始绘制</el-button>
-        <el-button @click="clearDraw">清除绘制</el-button>
-        <el-button @click="drawWall">画wall</el-button>
+      <div class="draw-arrow">
+        <el-button @click="singleArrow()">单箭头</el-button>
+        <el-button @click="clearArrows()">清 除</el-button>
       </div>
-      <div id="add-echart"></div>
-
-      <!-- <div class="handlerBtn">
-        <el-button @click="startDrawHandler">开始绘制</el-button>
-        <el-button @click="clearDraw">清除绘制</el-button>
-      </div> -->
     </div>
   </div>
 </template>
@@ -55,18 +48,13 @@ import targetForLocationComponent from "../components/targets/TargetLocation.vue
 import sceneModeComponent from "../components/SceneMode.vue";
 import { init_CzmlDataSource, multi_part_czml } from "../assets/js/Test3Dtile";
 import { PrimitiveRectangle } from "../assets/js/PrimitiveRectangle";
-
+import DrawstraightArrow from "../assets/js/Arrow";
 // var heatmap = require("heatmap.js/build/heatmap");
 import { heatmapCreate, heatmapRemove } from "../assets/js/tool/heatmapEvent";
-import {
-  addDataSources,
-  distoryPointsEntities,
-} from "../assets/js/tool/pointClustering";
-import html2canvas from "html2canvas";
-import { Profile } from "../assets/js/topographic";
-import { DrawWall } from "../assets/js/DrawWall";
-
+import { addDataSources, distoryPointsEntities } from "../assets/js/tool/pointClustering";
 var Cesium = require("cesium/Cesium");
+var Tiff = require("tiff.js");
+var fs = require("fs");
 
 export default {
   data() {
@@ -75,8 +63,6 @@ export default {
       targetLocationShow: false, // 经纬度视角高度实时展示
       screenMode: false, // 2D，3D模块展示
       imgURL: require("@/assets/img/timg1.png"),
-      profile: undefined,
-      wall: undefined,
     };
   },
   components: {
@@ -104,7 +90,7 @@ export default {
     // message 事件，监听其它页面 postMessage 发送过来的消息
     window.addEventListener(
       "message",
-      function(e) {
+      (e) => {
         if (e.data.type.indexOf("webpack") != -1) {
           return;
         }
@@ -122,10 +108,7 @@ export default {
 
             // 检测当前窗口是否通过其他页面打开（是否有父窗口）
             if (parent) {
-              parent.postMessage(
-                "这条信息是子窗口发送来的",
-                "http://localhost:8088/"
-              );
+              parent.postMessage("这条信息是子窗口发送来的", "http://localhost:8088/");
             }
             if (e.source) {
               // 发送消息的窗口
@@ -136,12 +119,13 @@ export default {
       },
       false
     );
+    this.straightArrow = new DrawstraightArrow(this.mapViewer);
   },
   methods: {
     initCesium() {
-      const viewer = defaultInitCesium("cesium-mapViewer", "Amap", true, "3D");
-      // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
-      // viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
+      const viewer = defaultInitCesium("cesium-mapViewer", "tianDitu", true, "3D");
+      viewer.scene.screenSpaceCameraController.maximumZoomDistance = 19000000; // 相机高度的最大值设定为 10000000 米
+      viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1000;
 
       // 开启地图高程;
       var terrainProvider = Cesium.createWorldTerrain({
@@ -163,8 +147,8 @@ export default {
       var object = {
         name: "object",
         // 计算属性
-        getName: function() {
-          return function() {
+        getName: function () {
+          return function () {
             console.info(this.name);
           };
         },
@@ -220,8 +204,8 @@ export default {
     },
     // 添加primitive
     addPrimitive() {
-      // PrimitiveRectangle.getInstance().addRectangleGeometry();
-      this.screemShot();
+      PrimitiveRectangle.getInstance().addRectangleGeometry();
+      // PrimitiveRectangle.getInstance().testAddRectangle();
     },
     destroyPrimitive() {
       PrimitiveRectangle.getInstance().removeRectangleGrometry();
@@ -233,81 +217,22 @@ export default {
       PrimitiveRectangle.getInstance().addRectangleGeometry();
     },
     removeListener() {
-      this.mapViewer.scene.camera.moveEnd.removeEventListener(
-        this.eventListener
-      );
+      this.mapViewer.scene.camera.moveEnd.removeEventListener(this.eventListener);
     },
 
-    screemShot() {
-      let option = {
-        scale: 1,
-        allowTaint: false,
-        useCORS: true,
-        backgroundColor: null,
-      };
-      return new Promise((resolve, reject) => {
-        try {
-          let mapDom = document
-            .getElementById("cesium-mapViewer")
-            .getElementsByTagName("canvas")
-            .item(0);
-          html2canvas(mapDom, option).then((canvas) => {
-            let url = canvas.toDataURL("image/png");
-            let link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", "截图");
-            link.style.display = "none";
-            document.body.appendChild(link);
-            link.click();
-            debugger;
-            // resolve(url);
-          });
-        } catch (error) {
-          reject(error);
-        }
-      });
+    singleArrow() {
+      this.straightArrow.startCreate();
     },
-    startDrawHandler() {
-      this.clearDraw();
-      this.profile = new Profile(this.mapViewer, "add-echart");
-      this.profile.handleMouse();
-    },
-    clearDraw() {
-      if (this.profile) {
-        this.profile.clearAll();
-        this.profile = null;
+    clearArrows() {
+    //   debugger;
+    //   let a = this.straightArrow.getData();
+    //   debugger;
+      if (this.straightArrow) {
+        this.straightArrow.clear();
       }
-    },
-    drawWall() {
-      this.wall = new DrawWall(this.mapViewer);
-      this.wall.handleMouse();
-      return;
-      // const imgUrl =
-      //   "https://t7.baidu.com/it/u=4162611394,4275913936&fm=193&f=GIF";
-      const imgUrl = require("../assets/img/elephant.jpg");
-      const redWall = this.mapViewer.entities.add({
-        name: "Red wall at height",
-        wall: {
-          positions: Cesium.Cartesian3.fromDegreesArrayHeights([
-            110.0,
-            40.0,
-            200000,
-            115.0,
-            40.0,
-            200000,
-          ]),
-          // minimumHeights: [50000, 50000.0],
-          // maximumHeights: [150000, 150000],
-          // material: Cesium.Color.RED,
-          material: imgUrl,
-        },
-      });
     },
   },
 };
-// try {
-
-// let mapDom = document.getElementById ("model-mapviewer").getElementsByTagName("canvas").item (0);
 </script>
 
 <style scoped>
@@ -387,21 +312,14 @@ export default {
   align-items: center;
   justify-items: center;
 }
-.handlerBtn {
+.draw-arrow {
   position: absolute;
   left: 10px;
-  top: 180px;
+  top: 200px;
   height: 50px;
   width: 200px;
   display: flex;
   align-items: center;
   justify-items: center;
-}
-#add-echart {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 200px;
 }
 </style>

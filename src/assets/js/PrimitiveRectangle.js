@@ -71,7 +71,6 @@ export class PrimitiveRectangle {
           }),
           attributes: {
             color: Cesium.ColorGeometryInstanceAttribute.fromColor(
-              // Cesium.Color.RED
               Cesium.Color.fromRandom({
                 alpha: 0.5,
               })
